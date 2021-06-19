@@ -4,7 +4,8 @@ class LessonsController < ApplicationController
 
   # GET /lessons
   def index
-    json_response(@course.lessons)
+    data = @course.lessons.paginate(page: params[:page], per_page: params[:size])
+    render json: { data: data, status: 200 }
   end
 
   # GET /lessons/1
