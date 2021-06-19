@@ -7,7 +7,10 @@ class AuthenticateUser
 
   # Service entry point
   def call
-    JsonWebToken.encode(user_id: user.id, email: user.email, role: user.role) if user
+    data = { user_id: user.id, name: user.name, email: user.email, role: user.role } if user
+    access_token = JsonWebToken.encode(data)
+    data[:token] = access_token
+    data
   end
 
   private
