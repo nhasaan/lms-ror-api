@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :authorize_request, only: :create
-  before_action :set_user, only: %i[show update destroy]
+  before_action :set_user, :set_current_user, only: %i[show update destroy]
 
   # GET /users
   def index
@@ -12,6 +12,10 @@ class UsersController < ApplicationController
   # GET /users/1
   def show
     render json: @user
+  end
+
+  def current_user
+    render json: @current_user
   end
 
   # POST /users
@@ -52,6 +56,10 @@ class UsersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def set_current_user
+    @current_user = User.find_by(token: request.headers['Authorization'])
   end
 
   # Only allow a list of trusted parameters through.
