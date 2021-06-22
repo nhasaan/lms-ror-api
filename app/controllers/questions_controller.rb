@@ -4,7 +4,8 @@ class QuestionsController < ApplicationController
 
   # GET /lessons/:lesson_id/questions
   def index
-    json_response(@lesson.questions)
+    data = @lesson.questions.paginate(page: params[:page], per_page: params[:size])
+    render json: { data: data, status: 200 }
   end
 
   # GET /questions/1
